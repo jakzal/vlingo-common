@@ -19,6 +19,15 @@ jobs:
         with:
           java-version: 1.8
 
+      - name: Update version
+        run: sed -i'.bkp' -e '/<artifactId>'$vlingo_package'<\/artifactId>/{' -e 'n;s/\(<version>\)[0-9\.]*\(<\/version>\)/\1'$vlingo_version'\2/' -e '}' -e 's/\(io.vlingo:'$vlingo_package'\):[0-9\.]*/\1:'$vlingo_version'/' README.md
+        env:
+          vlingo_package: vlingo-common
+          vlingo_version: 1.5.0
+
+      - name: Diff
+        run: git diff
+
       - name: Cache Maven packages
         uses: actions/cache@v2
         with:
